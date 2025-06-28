@@ -228,43 +228,43 @@ def go_tab(demo: gr.Blocks):
                 )
 
             with gr.Accordion(label="Ntfy认证配置[可选]", open=False):
-                    with gr.Row():
-                        ntfy_username_ui = gr.Textbox(
+                with gr.Row():
+                    ntfy_username_ui = gr.Textbox(
                             value=lambda :(ConfigDB.get("ntfyUsername") or ""),
                             label="Ntfy用户名",
                             interactive=True,
                             info="如果你的Ntfy服务器需要认证",
                         )
 
-                        ntfy_password_ui = gr.Textbox(
+                    ntfy_password_ui = gr.Textbox(
                             value=lambda :(ConfigDB.get("ntfyPassword") or ""),
                             label="Ntfy密码",
                             interactive=True,
                             type="password",
                         )
 
-                    def test_ntfy_connection():
-                        url = ConfigDB.get("ntfyUrl")
-                        username = ConfigDB.get("ntfyUsername")
-                        password = ConfigDB.get("ntfyPassword")
+                def test_ntfy_connection():
+                    url = ConfigDB.get("ntfyUrl")
+                    username = ConfigDB.get("ntfyUsername")
+                    password = ConfigDB.get("ntfyPassword")
 
-                        if not url:
-                            return "错误: 请先设置Ntfy服务器URL"
+                    if not url:
+                        return "错误: 请先设置Ntfy服务器URL"
 
-                        from util import NtfyUtil
+                    from util import NtfyUtil
 
-                        success, message = NtfyUtil.test_connection(
+                    success, message = NtfyUtil.test_connection(
                             url, username, password
                         )
 
-                        if success:
-                            return f"成功: {message}"
-                        else:
-                            return f"错误: {message}"
+                    if success:
+                        return f"成功: {message}"
+                    else:
+                        return f"错误: {message}"
 
-                    test_ntfy_button = gr.Button("测试Ntfy连接")
-                    test_ntfy_result = gr.Textbox(label="测试结果", interactive=False)
-                    test_ntfy_button.click(
+                test_ntfy_button = gr.Button("测试Ntfy连接")
+                test_ntfy_result = gr.Textbox(label="测试结果", interactive=False)
+                test_ntfy_button.click(
                         fn=test_ntfy_connection, inputs=[], outputs=test_ntfy_result
                     )
 
